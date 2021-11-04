@@ -2377,7 +2377,10 @@
                             giaban = giaban.replaceAll("₫", "");
                             let chitiet = getValueCodeFromContent(content, "[chitiet]", "[/chitiet]");
                             let mota = getValueCodeFromContent(content, "[mota]", "[/mota]");
-                            let link = n.link[1].href;
+                            let link = ''; 
+							$.each(n.link, function (indexL, itemL) {
+								if(itemL.type == "text/html") link = itemL.href;
+							});
                             link = link.replaceAll("#comment-form", "");
                             linkImage = linkImage.replaceAll("http://", "https://");
                             $(idBox).append(`<div class="item col-md-3">
@@ -2420,7 +2423,10 @@
                             let authors = getValueCodeFromContent(content, "[authors]", "[/authors]");
                             let rating_average = getValueCodeFromContent(content, "[rating_average]", "[/rating_average]");
                             let review_count = getValueCodeFromContent(content, "[review_count]", "[/review_count]");
-                            let link = n.link[1].href;
+                            let link = ''; 
+							$.each(n.link, function (indexL, itemL) {
+								if(itemL.type == "text/html") link = itemL.href;
+							});
                             link = link.replaceAll("#comment-form", "");
                             linkImage = linkImage.replaceAll("http://", "https://");
                             let dc = "";
@@ -2459,7 +2465,10 @@
                     $.each(data, function (index, n) {
                         let title = n.title.$t;
                         let content = n.content.$t;
-                        let link = n.link[1].href;
+                         let link = ''; 
+							$.each(n.link, function (indexL, itemL) {
+								if(itemL.type == "text/html") link = itemL.href;
+							});
                         link = link.replaceAll("#comment-form", "");
                         let postdate = n.published.$t;
                         let linkImage = getLinkImageFromContent(content);
