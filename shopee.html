@@ -1,0 +1,158 @@
+<div class="" style=";display:none">
+<img alt="" border="0" width="600" data-original-height="630" data-original-width="1200" src="https://1.bp.blogspot.com/-e2KD-i5UoUQ/YPLKEpvMbkI/AAAAAAAAQeI/Roogk5Hn3BQ9JG_67IXTWwYRRUOpNzX_ACLcBGAsYHQ/s600/687c457c-31be-428f-a1c0-5bd4737519a3-ma-giam-gia-shopee%2B%25281%2529.png"/>
+</div>
+<div class='coupon-list'>
+  	<div class="row" id="boxsearch"> 
+		<div class="col-md-10">
+			<input type="text" placeholder="Nhập link sản phẩm để tìm mã..." class="form-control" id="txtLink" />
+		</div>
+		<div class="col-md-2">
+			<button id="btnTim" class="btn btn-success">Tìm mã</button>
+		</div>
+	</div>
+	 
+	<div class="row">
+		<div class="col-md-3">
+			<select id="categories" class="form-control">
+				<option value="">Tất cả mã</option>
+				<option value="EC-1">Điện thoại - Máy tính bảng</option>
+				<option value="EC-2">Tivi-âm thanh</option>
+				<option value="EC-3">Thiết bị gia dụng</option>
+				<option value="EC-4">Điện lạnh - điện máy</option>
+				<option value="EC-5">Máy ảnh - máy quay phim</option>
+				<option value="EC-6">Máy tính - Laptop - Phụ kiện</option>
+				<option value="EC-7">Mẹ và bé</option>
+				<option value="EC-8">Sức khỏe - Làm đẹp</option>
+				<option value="EC-9">Bách hóa</option>
+				<option value="EC-10">Nội thất</option>
+				<option value="EC-11">Sách - VPP - Quà tặng</option>
+				<option value="EC-12">Nhạc cụ</option>
+				<option value="EC-13">Đồ thể thao</option>
+				<option value="EC-14">Máy công nghiệp</option>
+				<option value="EC-15">Thời trang</option>
+				<option value="EC-16">Thực phẩm đồ uống</option>
+				<option value="EC-17">Ô tô, xe máy, xe đạp</option>
+				<option value="EC-18">Voucher và Dịch vụ</option>
+				<option value="EC-19">Công nghệ</option>
+				<option value="EC-20">Tin học</option>
+				<option value="EC-21">Đồ dùng du lịch, thể thao, dã ngoại</option>
+				<option value="EC-22">Nhà cửa đời sống</option>
+				<option value="EC-23">Dịch vụ du lịch</option>
+				<option value="EC-24">Thời trang</option>
+				<option value="EC-25">Hàng nhập ngoại</option>
+				<option value="EC-26">Thực phẩm chức năng</option>
+				<option value="EC-27">Đồ chơi</option>
+				<option value="EC-28">Thức ăn thú cưng</option>
+				<option value="EC-29">Other</option>
+				<option value="EC-30">Điện tử và công nghệ</option>
+				<option value="EC-31">Sàn TMĐT </option> 
+			</select>
+		</div>
+		 
+	</div>
+	 
+	<div id="counponList" class='coupon-list-card'> </div> <div id="mgg-loading"> </div>
+	<hr/>
+	<p class="text-center"><button id="btnMore" class="btn btn-primary" style="border-radius:10px">Tải thêm mã</button></p>
+</div> 
+<div style="position:fixed;bottom:0;left:0;right:0;padding:5px;background:#FFF; display: none;">
+<span id="nameCounpon"></span> - 
+<p id="contentCounpon"></p>
+</div> 
+<script >
+
+let currentPage = 1;
+let limit = 50;
+var loadingImg = "https://blogger.googleusercontent.com/img/a/AVvXsEjem-tWEY77eArEVzlz0a7aSkuZaCfl9envYMXZk4xKHb0bEHrXEf2LtZ8kI6hlbl2zOcu7YIQiYHXjbmIvAmKcxO8B7kpQlm0_UyJeuhhUxVevCr8NEfHMAOrv7L-bMP1s9Zta0C7Nyjz2bE_4r0jRamiYy2222AWWqc0JyN92AxBvBOe5DJEqB4yB=s320";
+getCounpon("shopee");
+$("#btnMore").click(function(){
+	currentPage++;
+	getCounpon("shopee",$("#categories").val());
+})
+$('#txtLink').bind("enterKey",function(e){
+  $("#btnTim").click()
+});
+$('#txtLink').keyup(function(e){
+    if(e.keyCode == 13)
+    {
+        $(this).trigger("enterKey");
+    }
+});
+$("#btnTim").click(function(){
+	currentPage=1;
+	$("#counponList").empty();
+	searchCounpon($("#txtLink").val());
+})
+
+$("#btnLoc").click(function(){
+	currentPage=1;
+	$("#counponList").empty();
+	getCounpon("shopee",$("#categories").val());
+})
+$("#categories").change(function(){
+	currentPage=1;
+	$("#counponList").empty();
+	getCounpon("shopee",$("#categories").val());
+})
+
+function setModal(name,content){
+	$("#nameCounpon").html(name);
+	$("#contentCounpon").html(content);
+	$("#counponModal").modal("show");
+}
+function getCounpon(merchant,categories){
+$("#btnMore").show();
+  let authorizationToken = 'Token 7IucKy_UhUa76ZS5RhVv5onX6yefPEYT';
+  //$("#counponList").empty();
+  let url = 'https://api.accesstrade.vn/v1/offers_informations?merchant='+merchant+'&status=1&page='+currentPage+'&limit='+limit;
+  if(categories){
+	  url += '&categories='+categories;
+  }
+ $("#mgg-loading").html(`<p style="color:green;text-align:center;background:#fff;margin-top:10px"><img src="` + loadingImg + `" style="width:200px;display:block;margin:auto" alt="đang chờ"/><br/> <b>Đang tải dữ liệu....</b> </p>`);
+	$.ajax({
+      type: "GET",
+      beforeSend: function(request) {
+        request.setRequestHeader("Authorization", authorizationToken);
+      },
+      url: url,
+      data: null,
+      processData: false,
+      success: function(res) {
+		 $("#mgg-loading").empty();
+         let data = res.data;
+         appendItem(data);
+      }
+    });
+}
+function searchCounpon(urlLink){
+	$("#btnMore").hide();
+  let authorizationToken = 'Token 7IucKy_UhUa76ZS5RhVv5onX6yefPEYT';
+  $("#counponList").empty();
+  let url = 'https://api.accesstrade.vn/v1/offers_informations/coupon?url='+urlLink; 
+ $("#mgg-loading").html(`<p style="color:green;text-align:center;background:#fff;margin-top:10px"><img src="` + loadingImg + `" style="width:200px;display:block;margin:auto" alt="đang chờ"/><br/> <b>Đang tải dữ liệu....</b> </p>`);
+	$.ajax({
+      type: "GET",
+      beforeSend: function(request) {
+        request.setRequestHeader("Authorization", authorizationToken);
+      },
+      url: url,
+      data: null,
+      processData: false,
+      success: function(res) {
+		 $("#mgg-loading").empty();
+         let dataAll = res.data;
+		 if(dataAll.length>0){ 
+			 var data =[];
+			 let endCol = 6;
+			 if(dataAll.length < endCol){
+				endCol = dataAll.length;
+			 }
+			 for(let index=0;index < endCol ;index++){ data.push(dataAll[index]);}
+			 appendItem(data);
+		 }
+      }
+    });
+}
+
+</script>
+ 
