@@ -10,7 +10,7 @@ Chú ý OAuth 2.0 Client IDs mặc định sẽ hạn chế user.
 Nên bạn tạo OAuth 2.0 Client IDs của riêng bạn để thay trong appsettings của tool và trên phần cái đặt  Client IDs của web
 Link tạo  OAuth 2.0 Client IDs : https://console.cloud.google.com/apis/credentials
 1. Thay trong file appsettings của tool tạo token
-2. Cập nhật trên phần cài đặt tool trên web 
+2. Cập nhật trên phần cài đặt tool trên web  (nhớ key của tool tạo token phải trùng với key bạn nhập trên web)
 
 ------------------------------------------
 
